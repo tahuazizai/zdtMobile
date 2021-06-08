@@ -81,3 +81,19 @@ jasypt:
     # \u6307\u5B9A\u52A0\u5BC6\u65B9\u5F0F
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
+#日志
+ZSMART_HOME: D:/logs
+#httpClient配置
+http:
+  #设置连接总数
+  maxTotal: 500
+  #设置每个主机最大的并发数
+  defaultMaxPerRoute: 100
+  #设置创建连接的最长时间
+  connectTimeout: 2000
+  #从连接池中获取到连接的最长时间
+  connectionRequestTimeout: 500
+  #数据传输的最长时间
+  socketTimeout: 6000
+  #空闲时间(用于定期清理空闲连接)
+  maxIdleTime: 1
