@@ -1,6 +1,10 @@
+#application:
+#  servlet-path: /zdtMobile/*
 # \u5E94\u7528\u670D\u52A1 WEB \u8BBF\u95EE\u7AEF\u53E3
 server:
   port: 8081
+  servlet:
+    context-path: zdtMobile
 # \u5E94\u7528\u540D\u79F0
 spring:
   application:
@@ -97,3 +101,19 @@ http:
   socketTimeout: 6000
   #空闲时间(用于定期清理空闲连接)
   maxIdleTime: 1
+#Xss攻击拦截配置
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /zdtMobile/*
+  # 匹配链接
+  urlPatterns: /*
+#csrf攻击拦截配置
+csrf:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /zdtMobile/login
+  # 匹配链接
+  urlPatterns: /*
