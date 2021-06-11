@@ -7,6 +7,7 @@ import com.zdt.module.controller.BaseController;
 import com.zdt.module.enums.ErrorCodeEnum;
 import com.zdt.module.login.entity.SysUser;
 import com.zdt.module.login.service.SysUserService;
+import com.zdt.module.utils.CodeUtil;
 import com.zdt.module.utils.JWTUtil;
 import com.zdt.module.utils.Md5Util;
 import com.zdt.module.utils.RSAEncryptUtil;
@@ -17,10 +18,16 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.RenderedImage;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -51,7 +58,14 @@ public class LoginController extends BaseController<SysUser, SysUserService> {
      */
     @ApiOperation("登录")
     @GetMapping("/login")
-    public Result<?> login(@ApiParam("用户名") @RequestParam String userName, @ApiParam("密码") @RequestParam String password) throws Exception {
+    public Result<?> login(@ApiParam("用户名") @RequestParam String userName, @ApiParam("密码") @RequestParam String password, @ApiParam("验证码") @RequestParam String code) throws Exception {
+        String redisCode = (String) redisUtil.get(CommonConstant.CODE_PREFIX + userName);
+        if (Strings.isNullOrEmpty(redisCode)) {
+            return Result.error(ErrorCodeEnum.CODE_INVALID_EXCEPTION);
+        }
+        if (!code.equals(redisCode)) {
+            return Result.error(ErrorCodeEnum.CODE_ERROR_EXCEPTION);
+        }
         SysUser sysUser = (SysUser) redisUtil.get(CommonConstant.USER_ID_PREFIX + userName);
         if (sysUser == null) {
             LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -105,5 +119,49 @@ public class LoginController extends BaseController<SysUser, SysUserService> {
         return Result.OK(Boolean.TRUE);
     }
 
+    /**
+     * @param userName
+     * @return
+     */
+    @ApiOperation("获取验证码")
+    @GetMapping("/getCode")
+    public void getCode(@ApiParam("用户名") @RequestParam String userName, HttpServletResponse resp) throws Exception {
+        Map<String, Object> map = CodeUtil.generateCodeAndPic();
+        redisUtil.set(CommonConstant.CODE_PREFIX + userName, map.get("code"), CommonConstant.CODE_EXPIRE_TIME);
+        // 禁止图像缓存。
+        resp.setHeader("Pragma", "no-cache");
+        resp.setHeader("Cache-Control", "no-cache");
+        resp.setDateHeader("Expires", -1);
+        resp.setContentType("image/jpeg");
+        OutputStream out = resp.getOutputStream();
+        ImageIO.write((RenderedImage) map.get("codePic"), "jpeg", out);
+    }
 
+    /**
+     * 注册
+     *
+     * @param sysUser
+     * @param code
+     * @return
+     */
+    @ApiOperation("注册")
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody SysUser sysUser, @ApiParam("验证码") @RequestParam String code) throws Exception {
+        String redisCode = (String) redisUtil.get(CommonConstant.CODE_PREFIX + sysUser.getUserName());
+        if (Strings.isNullOrEmpty(redisCode)) {
+            return Result.error(ErrorCodeEnum.CODE_INVALID_EXCEPTION);
+        }
+        if (!code.equals(redisCode)) {
+            return Result.error(ErrorCodeEnum.CODE_ERROR_EXCEPTION);
+        }
+        String privateKey = (String) redisUtil.get(CommonConstant.PRIVATE_KEY_PREFIX + sysUser.getUserName());
+        if (Strings.isNullOrEmpty(privateKey)) {
+            return Result.error(ErrorCodeEnum.USER_PASSWORD_INVALID_EXCEPTION);
+        }
+        String rsaPassword = RSAEncryptUtil.decrypt(sysUser.getPassword(), privateKey);
+        String md5Password = md5Util.MD5EncodeUtf8(rsaPassword);
+        sysUser.setPassword(md5Password);
+        this.sysUserService.save(sysUser);
+        return Result.OK(Boolean.TRUE);
+    }
 }

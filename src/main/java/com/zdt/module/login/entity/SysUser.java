@@ -1,5 +1,8 @@
 package com.zdt.module.login.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,6 +19,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel("用户")
+@TableName("sys_user")
 public class SysUser implements Serializable {
     private static final long serialVersionUID = -7236267653852495956L;
     /**
@@ -33,5 +37,6 @@ public class SysUser implements Serializable {
      * 主键
      */
     @ApiModelProperty(value = "主键")
+    @TableId(type = IdType.ID_WORKER)
     private String id;
 }

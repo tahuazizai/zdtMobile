@@ -16,9 +16,13 @@ public class CommonConstant {
 
     public static final long TOKEN_EXPIRE_TIME = 1800;
 
+    public static final long CODE_EXPIRE_TIME = 60;
+
     public static final String CSRF_TOKEN = "CSRF_TOKEN";
 
     public static final String USER_ID_PREFIX = "userId:";
 
     public static final String PRIVATE_KEY_PREFIX = "privateKey:";
+
+    public static final String CODE_PREFIX = "code:";
 }

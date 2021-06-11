@@ -18,6 +18,8 @@ public enum ErrorCodeEnum {
     USER_NOT_EXIST_EXCEPTION(1004, "用户不存在"),
     USER_PASSWORD_INVALID_EXCEPTION(1005, "用户密码失效"),
     USER_PASSWORD_ERROR_EXCEPTION(1006, "用户密码错误"),
+    CODE_INVALID_EXCEPTION(1007, "验证码无效"),
+    CODE_ERROR_EXCEPTION(1008, "验证码错误"),
     ;
     /**
      * 编码
