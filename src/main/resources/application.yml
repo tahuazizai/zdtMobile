@@ -52,6 +52,14 @@ spring:
         shutdown-timeout: 100ms
       password: ''
       port: 6379
+  devtools:
+    restart:
+      #热部署生效
+      enabled: true
+      #设置重启的目录DeviceErrorLogMapper.xml
+      #additional-paths: src/main/java
+      #classpath目录下的WEB-INF文件夹内容修改不重启
+      exclude: WEB-INF/**
 #mybatis-plus\u914D\u7F6E
 mybatis-plus:
   configuration:
@@ -117,3 +125,6 @@ csrf:
   excludes: /zdtMobile/login
   # 匹配链接
   urlPatterns: /*
+#md5加密盐值
+password:
+  salt: 23543dfggeelysdafaqj23ou89ZXcj@#$@#$#@KJdjklj;D../dSF.,

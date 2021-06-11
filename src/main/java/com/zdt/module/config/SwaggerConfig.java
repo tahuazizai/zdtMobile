@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 //.enable(false)
                 .select()
                 //扫描的路径包,设置basePackage会将包下的所有被@Api标记类的所有方法作为api
-                .apis(RequestHandlerSelectors.basePackage("com.zdt.module.*.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.zdt.module.**.controller"))
                 //指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
                 .build();

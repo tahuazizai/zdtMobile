@@ -2,6 +2,7 @@ package com.zdt.module.config.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Strings;
+import com.zdt.module.constants.CommonConstant;
 import com.zdt.module.enums.ErrorCodeEnum;
 import com.zdt.module.exceptions.ZdtMobileSelevetException;
 import com.zdt.module.utils.RedisUtil;
@@ -49,14 +50,15 @@ public class CsrfFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         } else {
-            String csrfToken = httpServletRequest.getHeader("CSRF_TOKEN");
+            String csrfToken = httpServletRequest.getHeader(CommonConstant.CSRF_TOKEN);
             if (Strings.isNullOrEmpty(csrfToken)) {
                 throw new ZdtMobileSelevetException(ErrorCodeEnum.TOKEN_IS_NULL_EXCEPTION);
             }
-            Object token = redisUtil.get(csrfToken);
+            Object token = redisUtil.get(CommonConstant.TOKEN_PREFIX + csrfToken);
             if (token == null) {
                 throw new ZdtMobileSelevetException(ErrorCodeEnum.TOKEN_EXCEPTION);
             }
+            redisUtil.expire(CommonConstant.TOKEN_PREFIX + csrfToken, CommonConstant.TOKEN_EXPIRE_TIME);
             filterChain.doFilter(servletRequest, servletResponse);
         }
 
@@ -83,6 +85,9 @@ public class CsrfFilter implements Filter {
      * @return
      */
     public Boolean matches(HttpServletRequest request) {
+        if (!enabled) {
+            return true;
+        }
         if (CollectionUtils.isNotEmpty(excludes)) {
             for (String url : excludes) {
                 AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(url);
@@ -91,6 +96,6 @@ public class CsrfFilter implements Filter {
                 }
             }
         }
-        return  false;
+        return false;
     }
 }
