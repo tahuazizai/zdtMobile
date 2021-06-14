@@ -175,11 +175,12 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.vm</include>
-                </includes>
+<!--                <includes>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                    <include>**/*.vm</include>-->
+<!--                </includes>-->
                 <filtering>false</filtering>
+                <targetPath>${project.build.directory}/classes</targetPath>
             </resource>
         </resources>
         <plugins>
