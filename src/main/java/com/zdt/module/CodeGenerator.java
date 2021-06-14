@@ -4,26 +4,16 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.FileOutConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
-import com.baomidou.mybatisplus.generator.config.po.TableField;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.google.common.base.Strings;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
-
+@Slf4j
 public class CodeGenerator {
     /**
      * <p>
@@ -35,7 +25,7 @@ public class CodeGenerator {
         //用来获取Mybatis-Plus.properties文件的配置信息
         ResourceBundle rb = ResourceBundle.getBundle("zdt/genreator");
         // 选择 freemarker 引擎，默认 Veloctiy
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+//        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         //项目根目录  不可修改
         String projectPath = System.getProperty("user.dir");
         // 全局配置
@@ -46,6 +36,7 @@ public class CodeGenerator {
         gc.setEnableCache(false);
         gc.setBaseResultMap(true);
         gc.setBaseColumnList(true);
+        gc.setSwagger2(true);
         //gc.setKotlin(true);//是否生成 kotlin 代码
         gc.setAuthor("xxxx");
 
@@ -53,6 +44,7 @@ public class CodeGenerator {
          gc.setMapperName("%sDao");
          gc.setXmlName("%sDao");
          gc.setServiceName("%sService");
+         gc.setEntityName("%sPO");
          gc.setServiceImplName("%sServiceDiy");
          gc.setControllerName("%sController");
         mpg.setGlobalConfig(gc);
@@ -78,20 +70,22 @@ public class CodeGenerator {
         strategy.setInclude(rb.getString("table.name").split(","));
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
-         strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
+//         strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
 //         自定义实体，公共字段
-         strategy.setSuperEntityColumns(new String[] { "create_time", "create_by" ,"update_time", "update_by"});
+//         strategy.setSuperEntityColumns(new String[] { "create_time", "create_by" ,"update_time", "update_by"});
 //         自定义 mapper 父类
-         strategy.setSuperMapperClass("com.baomidou.mybatisplus.core.mapper.BaseMapper");
+//         strategy.setSuperMapperClass("com.baomidou.mybatisplus.core.mapper.BaseMapper");
 //         自定义 service 父类
-         strategy.setSuperServiceClass("com.baomidou.mybatisplus.extension.service.IService");
+//         strategy.setSuperServiceClass("com.baomidou.mybatisplus.extension.service.IService");
 //         自定义 service 实现类父类
-         strategy.setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl");
+//         strategy.setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl");
 //         自定义 controller 父类
          strategy.setSuperControllerClass("com.baomidou.demo.TestController");
         // 【实体】是否生成字段常量（默认 false）
         // public static final String ID = "test_id";
         strategy.setEntityColumnConstant(true);
+        strategy.setEntityLombokModel(true);
+        strategy.setRestControllerStyle(true);
         // 【实体】是否为构建者模型（默认 false）
         // public User setName(String name) {this.name = name; return this;}
         //strategy.setEntityBuilderModel(true);

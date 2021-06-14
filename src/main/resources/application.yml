@@ -54,8 +54,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     auto-mapping-behavior: full
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath*:mapper/**/*Mapper.xml
-  type-aliases-package: com.zdt.module.entity
+  mapper-locations: classpath*:com/**/*Mapper.xml
+  type-aliases-package: com.zdt.module.**.entity
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
