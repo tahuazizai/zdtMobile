@@ -1,29 +1,22 @@
 package com.zdt.module;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.FileOutConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
-import com.baomidou.mybatisplus.generator.config.po.TableField;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.google.common.base.Strings;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
+@Slf4j
 public class CodeGenerator {
     /**
      * <p>
@@ -35,17 +28,20 @@ public class CodeGenerator {
         //用来获取Mybatis-Plus.properties文件的配置信息
         ResourceBundle rb = ResourceBundle.getBundle("zdt/genreator");
         // 选择 freemarker 引擎，默认 Veloctiy
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+//        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         //项目根目录  不可修改
         String projectPath = System.getProperty("user.dir");
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setOpen(false);
         gc.setFileOverride(true);
-        gc.setActiveRecord(true);
+        gc.setActiveRecord(false);
         gc.setEnableCache(false);
         gc.setBaseResultMap(true);
         gc.setBaseColumnList(true);
+        gc.setSwagger2(true);
+       gc.setIdType(IdType.ID_WORKER);
         //gc.setKotlin(true);//是否生成 kotlin 代码
         gc.setAuthor("xxxx");
 
@@ -53,6 +49,7 @@ public class CodeGenerator {
          gc.setMapperName("%sDao");
          gc.setXmlName("%sDao");
          gc.setServiceName("%sService");
+         gc.setEntityName("%s");
          gc.setServiceImplName("%sServiceDiy");
          gc.setControllerName("%sController");
         mpg.setGlobalConfig(gc);
@@ -78,20 +75,26 @@ public class CodeGenerator {
         strategy.setInclude(rb.getString("table.name").split(","));
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
-         strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
+//         strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
 //         自定义实体，公共字段
-         strategy.setSuperEntityColumns(new String[] { "create_time", "create_by" ,"update_time", "update_by"});
+//         strategy.setSuperEntityColumns(new String[] { "create_time", "create_by" ,"update_time", "update_by"});
 //         自定义 mapper 父类
-         strategy.setSuperMapperClass("com.baomidou.mybatisplus.core.mapper.BaseMapper");
+//         strategy.setSuperMapperClass("com.baomidou.mybatisplus.core.mapper.BaseMapper");
 //         自定义 service 父类
-         strategy.setSuperServiceClass("com.baomidou.mybatisplus.extension.service.IService");
+//         strategy.setSuperServiceClass("com.baomidou.mybatisplus.extension.service.IService");
 //         自定义 service 实现类父类
-         strategy.setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl");
+//         strategy.setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl");
 //         自定义 controller 父类
-         strategy.setSuperControllerClass("com.baomidou.demo.TestController");
+         strategy.setSuperControllerClass("com.zdt.module.entity.BaseController");
         // 【实体】是否生成字段常量（默认 false）
         // public static final String ID = "test_id";
         strategy.setEntityColumnConstant(true);
+        strategy.setEntityLombokModel(true);
+        strategy.setRestControllerStyle(true);
+        strategy.setEntityColumnConstant(false);
+        strategy.setControllerMappingHyphenStyle(false);
+        strategy.setEntitySerialVersionUID(true);
+//        strategy.setEntityTableFieldAnnotationEnable(true);
         // 【实体】是否为构建者模型（默认 false）
         // public User setName(String name) {this.name = name; return this;}
         //strategy.setEntityBuilderModel(true);
@@ -109,15 +112,17 @@ public class CodeGenerator {
         mpg.setPackageInfo(pc);
 
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】  ${cfg.abc}
-        InjectionConfig cfg = new InjectionConfig() {
-            @Override
-            public void initMap() {
+//        InjectionConfig cfg = new InjectionConfig() {
+//            @Override
+//            public void initMap() {
 //                Map<String, Object> map = new HashMap<String, Object>();
-//                map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-mp");
+//                String entityName =  this.getConfig().getGlobalConfig().getEntityName();
+//                entityName = entityName.substring(0,1).toLowerCase()+entityName.substring(1);
+//                map.put("entityName",entityName);
 //                this.setMap(map);
-            }
-        };
-
+//            }
+//        };
+//        mpg.setCfg(cfg);
 
         // 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/templates 下面内容修改，
         // 放置自己项目的 src/main/resources/templates 目录下, 默认名称一下可以不配置，也可以自定义模板名称
