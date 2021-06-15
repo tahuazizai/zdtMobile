@@ -85,7 +85,7 @@ public class CodeGenerator {
 //         自定义 service 实现类父类
 //         strategy.setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl");
 //         自定义 controller 父类
-         strategy.setSuperControllerClass("com.zdt.module.entity.BaseController");
+         strategy.setSuperControllerClass("com.zdt.module.controller.BaseController");
         // 【实体】是否生成字段常量（默认 false）
         // public static final String ID = "test_id";
         strategy.setEntityColumnConstant(true);
