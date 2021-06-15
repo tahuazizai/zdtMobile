@@ -94,6 +94,6 @@ public class Result<T> implements Serializable {
 
 
     public static Result<Object> error(ErrorCodeEnum errorCodeEnum) {
-        error(errorCodeEnum.getCode(), errorCodeEnum.getDesc());
+        return error(errorCodeEnum.getCode(), errorCodeEnum.getDesc());
     }
 }

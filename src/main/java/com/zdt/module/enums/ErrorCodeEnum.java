@@ -20,6 +20,7 @@ public enum ErrorCodeEnum {
     USER_PASSWORD_ERROR_EXCEPTION(1006, "用户密码错误"),
     CODE_INVALID_EXCEPTION(1007, "验证码无效"),
     CODE_ERROR_EXCEPTION(1008, "验证码错误"),
+    FIND_NO_RECORD_EXCEPTION(1009, "没有对应记录"),
     ;
     /**
      * 编码
