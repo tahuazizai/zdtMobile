@@ -68,7 +68,7 @@ public class Md5Util {
         return resultString.toUpperCase();
     }
 
-    public String MD5EncodeUtf8(String origin) throws Exception {
+    public String MD5EncodeUtf8(String origin, String salt) throws Exception {
         origin = origin + salt;
         return MD5Encode(origin, "utf-8");
     }

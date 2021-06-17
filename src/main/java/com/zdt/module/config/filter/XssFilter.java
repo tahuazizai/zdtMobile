@@ -1,6 +1,12 @@
 package com.zdt.module.config.filter;
 
 import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.zdt.module.config.XssStringJsonSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
@@ -78,4 +84,6 @@ public class XssFilter implements Filter {
         }
         return false;
     }
+
+
 }

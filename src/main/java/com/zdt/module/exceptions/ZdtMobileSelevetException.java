@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author: hj
  * @date: 2021-05-17 18:34
  */
-public class ZdtMobileSelevetException extends ServletException implements Serializable {
+public class ZdtMobileSelevetException extends RuntimeException implements Serializable {
 
     private static final long serialVersionUID = 2451837446265925557L;
     /**

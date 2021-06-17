@@ -4,25 +4,18 @@ import java.util.Arrays;
 
 /**
  * @Version: 1.0
- * @Description: 错误编码枚举
+ * @Description: 登录状态枚举
  * @copyright: Copyright (c) 2019 立林科技 All Rights Reserved
  * @company 厦门立林科技有限公司
  * @Author: hj
- * @date: 2021-05-06 16:17
+ * @date: 2021-06-17 15:13
  * @history:
  */
-public enum ErrorCodeEnum {
-    SYSTEM_EXCEPTION(1001, "系统异常"),
-    TOKEN_EXCEPTION(1002, "TOKEN失效"),
-    TOKEN_IS_NULL_EXCEPTION(1003, "TOKEN为null"),
-    USER_NOT_EXIST_EXCEPTION(1004, "用户不存在"),
-    USER_PASSWORD_INVALID_EXCEPTION(1005, "用户密码失效"),
-    USER_PASSWORD_ERROR_EXCEPTION(1006, "用户密码错误"),
-    CODE_INVALID_EXCEPTION(1007, "验证码无效"),
-    CODE_ERROR_EXCEPTION(1008, "验证码错误"),
-    FIND_NO_RECORD_EXCEPTION(1009, "没有对应记录"),
-    ACCOUNT_NOT_EFFECT_EXCEPTION(1010, "账号未生效"),
-    ACCOUNT_EXPIRE_EXCEPTION(1011, "账号过期"),
+public enum LoginStatusEnum {
+    INVALID(0, "失效"),
+    VALID(1, "有效"),
+    ACCOUNT_EXCEPTION(2, "账号异常"),
+    LOCK(3, "锁定"),
     ;
     /**
      * 编码
@@ -33,7 +26,7 @@ public enum ErrorCodeEnum {
      */
     private String desc;
 
-    ErrorCodeEnum(Integer code, String desc) {
+    LoginStatusEnum(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }
@@ -46,10 +39,10 @@ public enum ErrorCodeEnum {
      * @throws:
      **/
     public static String getByCode(Integer code) {
-        if (code == null) {
+        if (code != null) {
             return null;
         }
-        return Arrays.stream(ErrorCodeEnum.values()).filter(sendModeEnum -> code.equals(sendModeEnum.getCode())).findFirst().orElse(null).getDesc();
+        return Arrays.stream(LoginStatusEnum.values()).filter(sendModeEnum -> code.equals(sendModeEnum.getCode())).findFirst().orElse(null).getDesc();
     }
 
     public Integer getCode() {

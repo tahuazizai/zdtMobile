@@ -1,0 +1,127 @@
+#application:
+#  servlet-path: /zdtMobile/*
+# 配置端口号
+server:
+  port: 8081
+  servlet:
+    context-path: /zdtMobile
+# 服务名称
+spring:
+  application:
+    name: zdtMobile
+#数据源
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://118.24.65.204:3306/prod?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: prod
+    password: prod
+    druid:
+      # 连接池的配置信息
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      #redis 配置
+    redis:
+      database: 0
+      host: 127.0.0.1
+      lettuce:
+        pool:
+          max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+          max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+          max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+          min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+        shutdown-timeout: 100ms
+      password: ''
+      port: 6379
+  devtools:
+    restart:
+      #热部署生效
+      enabled: true
+      #设置重启的目录DeviceErrorLogMapper.xml
+      #additional-paths: src/main/java
+      #classpath目录下的WEB-INF文件夹内容修改不重启
+      exclude: WEB-INF/**
+#mybatis plus 设置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  type-aliases-package: com.zdt.module.**.entity
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      #主键类型  0:"数据库ID自增",1:"该类型为未设置主键类型", 2:"用户输入ID",3:"全局唯一ID (数字类型唯一ID)", 4:"全局唯一ID UUID",5:"字符串全局唯一ID (idWorker 的字符串表示)";
+      id-type: ID_WORKER
+
+      field-strategy: NOT_EMPTY
+      # 默认数据库表下划线命名
+      table-underline: true
+      db-type: mysql
+    refresh: true
+    configuration:
+      # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+      #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      # 返回类型为Map,显示null对应的字段
+      call-setters-on-nulls: true
+# jasypt密码加密
+jasypt:
+  encryptor:
+    password: zdt
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+#httpClient配置
+http:
+  #设置连接总数
+  maxTotal: 500
+  #设置每个主机最大的并发数
+  defaultMaxPerRoute: 100
+  #设置创建连接的最长时间
+  connectTimeout: 2000
+  #从连接池中获取到连接的最长时间
+  connectionRequestTimeout: 500
+  #数据传输的最长时间
+  socketTimeout: 6000
+  #空闲时间(用于定期清理空闲连接)
+  maxIdleTime: 1
+#Xss攻击拦截配置
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes:
+  # 匹配链接
+  urlPatterns: /*
+#csrf攻击拦截配置
+csrf:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /**
+  # 匹配链接
+  urlPatterns: /*
+#md5加密盐值
+password:
+  salt: 23543dfggeelysdafaqj23ou89ZXcj@#$@#$#@KJdjklj;D../dSF.,

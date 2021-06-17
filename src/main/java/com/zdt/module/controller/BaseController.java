@@ -2,7 +2,7 @@ package com.zdt.module.controller;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zdt.module.constants.CommonConstant;
-import com.zdt.module.login.entity.SysUser;
+import com.zdt.module.login.entity.Account;
 import com.zdt.module.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,9 +32,9 @@ public class BaseController<T, R extends IService<T>> {
      *
      * @return
      */
-    protected SysUser getUserInfo() {
+    protected Account getUserInfo() {
         String csrfToken = request.getHeader(CommonConstant.CSRF_TOKEN);
-        SysUser sysUser = (SysUser) redisUtil.get(CommonConstant.TOKEN_PREFIX + csrfToken);
+        Account sysUser = (Account) redisUtil.get(CommonConstant.TOKEN_PREFIX + csrfToken);
         return sysUser;
     }
 

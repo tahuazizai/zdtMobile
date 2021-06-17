@@ -92,6 +92,12 @@ public class Result<T> implements Serializable {
         return r;
     }
 
+    public static Result<Object> error(String msg) {
+        Result<Object> r = new Result<Object>();
+        r.setMessage(msg);
+        r.setSuccess(false);
+        return r;
+    }
 
     public static Result<Object> error(ErrorCodeEnum errorCodeEnum) {
         return error(errorCodeEnum.getCode(), errorCodeEnum.getDesc());

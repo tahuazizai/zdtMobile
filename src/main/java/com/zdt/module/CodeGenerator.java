@@ -56,7 +56,7 @@ public class CodeGenerator {
         gc.setXmlName("%sDao");
         gc.setServiceName("%sService");
         gc.setEntityName("%s");
-        gc.setServiceImplName("%sServiceDiy");
+        gc.setServiceImplName("%sServiceImpl");
         gc.setControllerName("%sController");
         mpg.setGlobalConfig(gc);
 
