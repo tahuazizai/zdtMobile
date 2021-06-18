@@ -164,8 +164,8 @@ public class AccountController extends BaseController<Account, AccountService> {
      */
     @ApiOperation("注册")
     @PostMapping("/register")
-    public Result<?> register(@RequestBody Account sysUser, @ApiParam("验证码") @RequestParam(required = true) String code) throws Exception {
-        log.info("start4");
+    public Result<?> register(@RequestBody Account sysUser, @ApiParam("验证码") @RequestParam String code) throws Exception {
+        log.info("start7");
         String redisCode = (String) redisUtil.get(CommonConstant.CODE_PREFIX + sysUser.getAcctLoginName());
         if (Strings.isNullOrEmpty(redisCode)) {
             return Result.error(ErrorCodeEnum.CODE_INVALID_EXCEPTION);
