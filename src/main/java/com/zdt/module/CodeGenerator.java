@@ -47,6 +47,8 @@ public class CodeGenerator {
         gc.setBaseResultMap(true);
         gc.setBaseColumnList(true);
         gc.setSwagger2(true);
+        // 配置时间类型策略（date类型），如果不配置会生成LocalDate类型
+        gc.setDateType(DateType.ONLY_DATE);
         gc.setIdType(IdType.ID_WORKER);
         //gc.setKotlin(true);//是否生成 kotlin 代码
         gc.setAuthor("xxxx");
