@@ -2,6 +2,7 @@ package com.zdt.module.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.zdt.module.config.filter.CsrfFilter;
+import com.zdt.module.config.filter.ExceptionFilter;
 import com.zdt.module.config.filter.XssFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -69,6 +70,15 @@ public class FilterConfig {
         initParameters.put("excludes", csrfExcludes);
         initParameters.put("enabled", csrfEnabled);
         registration.setInitParameters(initParameters);
+        return registration;
+    }
+
+    @Bean
+    @Order(-1)
+    public FilterRegistrationBean exceptionFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new ExceptionFilter());
+        registration.setName("exceptionFilter");
         return registration;
     }
 }
