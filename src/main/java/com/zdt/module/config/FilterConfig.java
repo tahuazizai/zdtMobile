@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 
 import javax.servlet.DispatcherType;
 import java.util.HashMap;
@@ -41,8 +40,8 @@ public class FilterConfig {
 
     @Value("${csrf.urlPatterns}")
     private String csrfUrlPatterns;
+
     @Bean
-    @Order(2)
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
@@ -55,10 +54,11 @@ public class FilterConfig {
         initParameters.put("excludes", excludes);
         initParameters.put("enabled", enabled);
         registration.setInitParameters(initParameters);
+        registration.setOrder(2);
         return registration;
     }
+
     @Bean
-    @Order(1)
     public FilterRegistrationBean csrfFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new CsrfFilter());
@@ -70,15 +70,16 @@ public class FilterConfig {
         initParameters.put("excludes", csrfExcludes);
         initParameters.put("enabled", csrfEnabled);
         registration.setInitParameters(initParameters);
+        registration.setOrder(1);
         return registration;
     }
 
     @Bean
-    @Order(-1)
     public FilterRegistrationBean exceptionFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new ExceptionFilter());
         registration.setName("exceptionFilter");
+        registration.setOrder(-1);
         return registration;
     }
 }

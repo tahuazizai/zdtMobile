@@ -16,7 +16,7 @@ import java.security.MessageDigest;
  */
 @Component
 public class Md5Util {
-    @Value("password.salt")
+    @Value("${password.salt}")
     private String salt;
 
     private static final String hexDigits[] = {"0", "1", "2", "3", "4", "5",
